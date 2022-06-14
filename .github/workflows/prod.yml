@@ -1,39 +1,54 @@
-name: Node - SSH deploy
-
-# Controls when the action will run.
+name: fmta_dev
 on:
-    # Triggers the workflow on push or pull request events but only for the master branch
-    push:
-        branches: [main]
-    pull_request:
-        branches: [main]
+  push:
+    branches: [ main ]
 
 jobs:
-    SFTP-deploy:
-        name: 🎉 Deploy
-        runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: |
+          **/node_modules
+        key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
-        steps:
-            - name: 🚚 Get latest code
-              uses: actions/checkout@v2
-
-            - name: Use Node.js 16
-              uses: actions/setup-node@v2-beta
-              with:
-                  node-version: '16'
-
-            - name: 🔨 Build Project
-              run: |
-                  yarn
-                  yarn build
-
-            - name: 📂 Deploy to Server
-              uses: easingthemes/ssh-deploy@v2.1.5
-              env:
-                  SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-                  # ARGS: "-rltgoDzvO --delete"
-                  SOURCE: 'build/'
-                  REMOTE_HOST: 192.34.62.123
-                  REMOTE_USER: mantis
-                  TARGET: public_html/free
-                  EXCLUDE: '/dist/, /node_modules/'
+    - uses: actions/checkout@v2
+    - name: Use Node.js 18.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 18.x
+    - uses: borales/actions-yarn@v2.3.0
+      with:
+        cmd: install # will run `yarn install` command
+    - uses: borales/actions-yarn@v2.3.0
+      with:
+        cmd: build # will run `yarn build` command
+    - uses: borales/actions-yarn@v2.3.0
+    - name: Create deployment artifact
+      run: tar -czf app.tar.gz --exclude=*.git --exclude=node_modules --exclude=tests *
+    - name: Archive Production Artifact
+      uses: actions/upload-artifact@master
+      with:
+        name: build
+        path: build
+  web-deploy:
+    needs: build
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v2
+    - name: Download Artifact
+      uses: actions/download-artifact@master
+      with:
+        name: build
+        path: build
+    - name: FTP Deploy
+      uses: SamKirkland/FTP-Deploy-Action@4.2.0
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        server-dir: /public_html/admin-prod/
