@@ -15,13 +15,14 @@ import 'assets/third-party/apex-chart.css';
 import App from './App';
 import { store } from 'store';
 import reportWebVitals from './reportWebVitals';
-
+import ls from 'localstorage-slim';
 // ==============================|| MAIN - REACT DOM RENDER  ||============================== //
+ls.config.encrypt = true;
 
 ReactDOM.render(
     <StrictMode>
         <ReduxProvider store={store}>
-            <BrowserRouter basename="/">
+            <BrowserRouter>
                 <App />
             </BrowserRouter>
         </ReduxProvider>

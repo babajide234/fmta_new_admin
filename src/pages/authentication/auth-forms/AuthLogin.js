@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 // material-ui
@@ -31,10 +32,22 @@ import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
+import { useSelector, useDispatch } from 'react-redux';
+import { login } from 'store/reducers/authSlice';
+
+// ============================|| ||============================ //
+
 const AuthLogin = () => {
     const [checked, setChecked] = React.useState(false);
 
     const [showPassword, setShowPassword] = React.useState(false);
+    const [email, setemail] = useState('');
+    const [password, setpassword] = useState('');
+    const dispatch = useDispatch();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+    };
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     };
@@ -42,13 +55,19 @@ const AuthLogin = () => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+    const handlelogin = (data) => {
+        const request = dispatch(login(data));
+        request.then((res) => {
+            console.log(res);
+        });
+    };
 
     return (
         <>
             <Formik
                 initialValues={{
-                    email: 'info@codedthemes.com',
-                    password: '123456',
+                    email: 'babajide2341@gmail.com',
+                    password: '12345678',
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({
@@ -57,6 +76,11 @@ const AuthLogin = () => {
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
+                        const payload = {
+                            email: values.email,
+                            password: values.password
+                        };
+                        handlelogin(payload);
                         setStatus({ success: false });
                         setSubmitting(false);
                     } catch (err) {

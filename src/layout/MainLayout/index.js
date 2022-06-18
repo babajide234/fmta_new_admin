@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
@@ -14,15 +15,26 @@ import Breadcrumbs from 'components/@extended/Breadcrumbs';
 
 // types
 import { openDrawer } from 'store/reducers/menu';
-
+// import { drawerOpen } from 'store/reducers/authSlice';
+import { refresh } from 'store/reducers/authSlice';
+import ls from 'localstorage-slim';
 // ==============================|| MAIN LAYOUT ||============================== //
+const useAuth = () => {
+    const { isLoggedin } = useSelector((state) => state.authSlice);
+    const user = {
+        isLoggedin
+    };
+    return user && user.isLoggedin;
+};
 
 const MainLayout = () => {
     const theme = useTheme();
     const matchDownLG = useMediaQuery(theme.breakpoints.down('xl'));
     const dispatch = useDispatch();
+    let navigate = useNavigate();
 
     const { drawerOpen } = useSelector((state) => state.menu);
+    const { isLoggedin } = useSelector((state) => state.authSlice);
 
     // drawer toggler
     const [open, setOpen] = useState(drawerOpen);
@@ -44,6 +56,20 @@ const MainLayout = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [drawerOpen]);
 
+    // useEffect(() => {
+    //     isLoggedin ? console.log('is user loggedin: ', isLoggedin) : console.log('is user loggedin: ', isLoggedin);
+
+    //     if (ls.get('token') !== null) return;
+    //     const data = ls.get('token');
+    //     if (data.isloggedin) return;
+    //     dispatch(refresh());
+
+    //     if (isLoggedin) return;
+    //     navigate('/dashboard');
+    // }, [isLoggedin]);
+
+    const isAuth = useAuth();
+
     return (
         <Box sx={{ display: 'flex', width: '100%' }}>
             <Header open={open} handleDrawerToggle={handleDrawerToggle} />
@@ -51,7 +77,7 @@ const MainLayout = () => {
             <Box component="main" sx={{ width: '100%', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
                 <Toolbar />
                 <Breadcrumbs navigation={navigation} title titleBottom card={false} divider={false} />
-                <Outlet />
+                {isLoggedin ? <Outlet /> : <Navigate to="/login" />}
             </Box>
         </Box>
     );
