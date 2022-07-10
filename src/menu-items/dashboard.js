@@ -19,7 +19,7 @@ const dashboard = {
             type: 'item',
             url: '/dashboard/default',
             icon: icons.DashboardOutlined,
-            breadcrumbs: false
+            breadcrumbs: true
         }
     ]
 };

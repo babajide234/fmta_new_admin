@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -28,7 +28,9 @@ import SettingTab from './SettingTab';
 // assets
 import avatar1 from 'assets/images/users/avatar-1.png';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-
+import { useSelector, useDispatch } from 'react-redux';
+import ls from 'localstorage-slim';
+import { logout } from 'store/reducers/authSlice';
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
     return (
@@ -55,9 +57,23 @@ function a11yProps(index) {
 
 const Profile = () => {
     const theme = useTheme();
+    const { user } = useSelector((state) => state.authSlice);
+    const dispatch = useDispatch();
+    const [username, setUsername] = useState(null);
+
+    useEffect(() => {
+        const userData = ls.get('token');
+
+        console.log('user: ', user);
+        console.log('user: ', userData);
+        if (userData) {
+            setUsername(userData?.user.firstname + ' ' + userData?.user.lastname);
+        }
+    }, [user]);
 
     const handleLogout = async () => {
         // logout
+        dispatch(logout());
     };
 
     const anchorRef = useRef(null);
@@ -98,7 +114,7 @@ const Profile = () => {
             >
                 <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
                     <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
-                    <Typography variant="subtitle1">John Doe</Typography>
+                    <Typography variant="subtitle1">{username}</Typography>
                 </Stack>
             </ButtonBase>
             <Popper
@@ -141,7 +157,7 @@ const Profile = () => {
                                                     <Stack direction="row" spacing={1.25} alignItems="center">
                                                         <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
                                                         <Stack>
-                                                            <Typography variant="h6">John Doe</Typography>
+                                                            <Typography variant="h6">{username}</Typography>
                                                             <Typography variant="body2" color="textSecondary">
                                                                 UI/UX Designer
                                                             </Typography>

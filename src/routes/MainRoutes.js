@@ -35,7 +35,15 @@ const MainRoutes = {
                     element: <Blog />
                 },
                 {
+                    path: 'blog/add',
+                    element: <Blog />
+                },
+                {
                     path: 'blog/:id',
+                    element: <Blog />
+                },
+                {
+                    path: 'blog/edit/:id',
                     element: <Blog />
                 }
             ]

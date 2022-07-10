@@ -33,6 +33,7 @@ export const addBlogPost = createAsyncThunk('addblogPost', async (payload) => {
         return console.log(error);
     }
 });
+
 export const editBlogPost = createAsyncThunk('editblogPost', async (payload) => {
     try {
         const request = await axiosPrivate.put(`/blog/${id}`, payload);

@@ -5,8 +5,9 @@ import { combineReducers } from 'redux';
 import menu from './menu';
 import authSlice from './authSlice';
 import blogSlice from './blog';
+import toast from './toast';
 // ==============================|| COMBINE REDUCERS ||============================== //
 
-const reducers = combineReducers({ menu, authSlice, blogSlice });
+const reducers = combineReducers({ menu, authSlice, blogSlice, toast });
 
 export default reducers;

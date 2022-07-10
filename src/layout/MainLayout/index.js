@@ -38,6 +38,7 @@ const MainLayout = () => {
 
     // drawer toggler
     const [open, setOpen] = useState(drawerOpen);
+
     const handleDrawerToggle = () => {
         setOpen(!open);
         dispatch(openDrawer({ drawerOpen: !open }));
@@ -57,15 +58,10 @@ const MainLayout = () => {
     }, [drawerOpen]);
 
     // useEffect(() => {
-    //     isLoggedin ? console.log('is user loggedin: ', isLoggedin) : console.log('is user loggedin: ', isLoggedin);
-
-    //     if (ls.get('token') !== null) return;
-    //     const data = ls.get('token');
-    //     if (data.isloggedin) return;
-    //     dispatch(refresh());
-
-    //     if (isLoggedin) return;
-    //     navigate('/dashboard');
+    //     if (isLoggedin) {
+    //     } else {
+    //         ls.clear();
+    //     }
     // }, [isLoggedin]);
 
     const isAuth = useAuth();
@@ -77,6 +73,7 @@ const MainLayout = () => {
             <Box component="main" sx={{ width: '100%', flexGrow: 1, p: { xs: 2, sm: 3 } }}>
                 <Toolbar />
                 <Breadcrumbs navigation={navigation} title titleBottom card={false} divider={false} />
+                {/* <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} message="Note archived" action={action} /> */}
                 {isLoggedin ? <Outlet /> : <Navigate to="/login" />}
             </Box>
         </Box>

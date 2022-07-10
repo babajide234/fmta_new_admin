@@ -5,7 +5,8 @@ import ls from 'localstorage-slim';
 const initialState = {
     token: '',
     isLoggedin: false,
-    isLoading: false
+    isLoading: false,
+    user: []
 };
 
 export const login = createAsyncThunk('login', async (payload) => {
@@ -41,9 +42,11 @@ export const authSlice = createSlice({
             console.log('from authslice: ', action.payload.token);
             state.token = action.payload.token;
             state.isLoggedin = true;
+            state.user = action.payload.user;
             ls.set('token', {
                 isloggedin: state.isLoggedin,
-                token: action.payload.token
+                token: action.payload.token,
+                user: action.payload.user
             });
         },
         [login.rejected]: (state) => {

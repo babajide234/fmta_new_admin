@@ -5,7 +5,22 @@ import { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
 // material-ui
-import { Box, Link, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, IconButton } from '@mui/material';
+import {
+    Box,
+    Link,
+    Stack,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography,
+    IconButton,
+    Menu,
+    MenuItem,
+    ListItemIcon
+} from '@mui/material';
 import Chip from '@mui/material/Chip';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
@@ -16,6 +31,9 @@ import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import Paper from '@mui/material/Paper';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+
 // third-party
 import NumberFormat from 'react-number-format';
 
@@ -198,7 +216,7 @@ const Tags = ({ tags }) => {
     return (
         <Tagscontainer>
             {tagArr?.map((item, i) => {
-                return <TagsTags key={i}>{item}</TagsTags>;
+                return item !== '' && <TagsTags key={i}>{item}</TagsTags>;
             })}
         </Tagscontainer>
     );
@@ -214,9 +232,11 @@ const TitleLink = ({ text, id }) => {
         </TitleLinkContainer>
     );
 };
+
 Tags.propTypes = {
     tags: PropTypes.string
 };
+
 TitleLink.propTypes = {
     text: PropTypes.string,
     id: PropTypes.number
@@ -242,6 +262,15 @@ export default function BlogTable() {
         console.log('blog posts: ', posts);
     }, []);
 
+    const [anchorEl, setAnchorEl] = useState(null);
+    const openm = Boolean(anchorEl);
+
+    const handleClickm = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClosem = () => {
+        setAnchorEl(null);
+    };
     return (
         <Box>
             <TableContainer
@@ -303,9 +332,32 @@ export default function BlogTable() {
                                     </TableCell>
                                     <TableCell align="left">
                                         <Stack direction="row" spacing={1}>
-                                            <IconButton aria-label="delete">
-                                                <DeleteIcon />
+                                            <IconButton
+                                                onClick={handleClickm}
+                                                aria-controls={openm ? 'amenu' : undefined}
+                                                aria-haspopup="true"
+                                                aria-expanded={openm ? 'true' : undefined}
+                                            >
+                                                <MoreVertIcon />
                                             </IconButton>
+                                            <Menu anchorEl={anchorEl} id="amenu" open={openm} onClose={handleClosem} onClick={handleClosem}>
+                                                <MenuItem divider={true} sx={{ color: 'red' }}>
+                                                    {' '}
+                                                    <ListItemIcon>
+                                                        <DeleteIcon sx={{ color: 'red' }} />
+                                                    </ListItemIcon>
+                                                    <Typography color="danger">Delete</Typography>
+                                                </MenuItem>
+                                                <MenuItem>
+                                                    {' '}
+                                                    <ListItemIcon>
+                                                        <EditIcon sx={{ color: 'blue' }} />
+                                                    </ListItemIcon>
+                                                    <Typography component={Link} to={`/dashboard/blog/edit/${row.actions}`} color="blue">
+                                                        Edit
+                                                    </Typography>
+                                                </MenuItem>
+                                            </Menu>
                                         </Stack>
                                     </TableCell>
                                 </TableRow>

@@ -36,6 +36,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { login } from 'store/reducers/authSlice';
 
 // ============================|| ||============================ //
+import { toast } from 'react-toastify';
 
 const AuthLogin = () => {
     const [checked, setChecked] = React.useState(false);
@@ -58,6 +59,7 @@ const AuthLogin = () => {
     const handlelogin = (data) => {
         const request = dispatch(login(data));
         request.then((res) => {
+            toast.success('login Successfull');
             console.log(res);
         });
     };

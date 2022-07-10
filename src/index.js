@@ -1,4 +1,6 @@
-import { StrictMode } from 'react';
+window.process = {};
+// import { StrictMode } from 'react';
+
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -6,8 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import 'simplebar/src/simplebar.css';
 
 // third-party
-import { Provider as ReduxProvider } from 'react-redux';
-
+import { Provider as ReduxProvider, useSelector } from 'react-redux';
 // apex-chart
 import 'assets/third-party/apex-chart.css';
 
@@ -16,17 +17,21 @@ import App from './App';
 import { store } from 'store';
 import reportWebVitals from './reportWebVitals';
 import ls from 'localstorage-slim';
+import NotificationProvider from 'components/Notifications/NotificationProvider';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
+
 // ==============================|| MAIN - REACT DOM RENDER  ||============================== //
 ls.config.encrypt = true;
 
 ReactDOM.render(
-    <StrictMode>
-        <ReduxProvider store={store}>
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
-        </ReduxProvider>
-    </StrictMode>,
+    <ReduxProvider store={store}>
+        <BrowserRouter>
+            <ToastContainer />
+            <App />
+        </BrowserRouter>
+    </ReduxProvider>,
     document.getElementById('root')
 );
 
