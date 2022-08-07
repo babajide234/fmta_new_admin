@@ -6,7 +6,7 @@ import ScrollTop from 'components/ScrollTop';
 import { useEffect } from 'react';
 // import { ToastContainer } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
-
+// import Loader from ''
 // ==============================|| APP - THEME, ROUTER, LOCAL  ||============================== //
 
 const App = () => {
@@ -18,6 +18,7 @@ const App = () => {
     return (
         <ThemeCustomization>
             <ScrollTop>
+                {/* <Loader /> */}
                 <Routes />
             </ScrollTop>
         </ThemeCustomization>

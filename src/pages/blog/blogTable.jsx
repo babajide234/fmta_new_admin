@@ -52,7 +52,7 @@ function createData(title, author, date_created, published, tags, views, actions
 
 const rows = (data) => {
     const postArray = [];
-    data.map((item) => {
+    data?.map((item) => {
         return postArray.push(createData(item.title, item.author, item.date_created, item.published, item.tags, item.views, item.id));
     });
     return postArray;
@@ -183,8 +183,8 @@ OrderTableHead.propTypes = {
 const OrderStatus = ({ status }) => {
     let color;
     let title;
-
-    switch (status) {
+    let num = Number(status);
+    switch (num) {
         case 0:
             color = 'warning';
             title = 'Not Published';
@@ -258,9 +258,9 @@ export default function BlogTable() {
     const handleClose = () => setOpen(false);
     const { posts, singlePost, addStatus } = useSelector((state) => state.blogSlice);
 
-    useEffect(() => {
-        console.log('blog posts: ', posts);
-    }, []);
+    // useEffect(() => {
+    //     console.log('blog posts: ', posts);
+    // }, []);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const openm = Boolean(anchorEl);
@@ -270,6 +270,10 @@ export default function BlogTable() {
     };
     const handleClosem = () => {
         setAnchorEl(null);
+    };
+    const handleDelete = (id) => {
+        setAnchorEl(null);
+        console.log('delete id: ', id);
     };
     return (
         <Box>
@@ -341,7 +345,7 @@ export default function BlogTable() {
                                                 <MoreVertIcon />
                                             </IconButton>
                                             <Menu anchorEl={anchorEl} id="amenu" open={openm} onClose={handleClosem} onClick={handleClosem}>
-                                                <MenuItem divider={true} sx={{ color: 'red' }}>
+                                                <MenuItem onClick={() => handleDelete(row.actions)} divider={true} sx={{ color: 'red' }}>
                                                     {' '}
                                                     <ListItemIcon>
                                                         <DeleteIcon sx={{ color: 'red' }} />

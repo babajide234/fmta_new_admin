@@ -65,7 +65,7 @@ const Blog = () => {
             setedit(false);
         }
         if (AddPost) {
-            console.log('making a new blog');
+            // console.log('making a new blog');
             setadd(true);
             setview(false);
             setlist(false);
@@ -76,10 +76,6 @@ const Blog = () => {
             setview(false);
             setlist(false);
             setedit(true);
-
-            settitle(singlePost.title);
-            setSubtitle(singlePost.subtitle);
-            setpostbody(singlePost.body);
         }
     }, [id, AddPost, EditPost]);
 
@@ -111,6 +107,7 @@ const Blog = () => {
                     {list && <BlogTable />}
                     {view && <BlogView id={id} />}
                     {add && <AddBlog />}
+                    {edit && <AddBlog />}
                 </MainCard>
             </Grid>
         </Grid>

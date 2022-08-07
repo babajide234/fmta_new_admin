@@ -7,7 +7,11 @@ import MainLayout from 'layout/MainLayout';
 // render - dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const Blog = Loadable(lazy(() => import('pages/blog')));
-
+const Products = Loadable(lazy(() => import('pages/products')));
+const Categories = Loadable(lazy(() => import('pages/categories')));
+const Users = Loadable(lazy(() => import('pages/users')));
+const Vendors = Loadable(lazy(() => import('pages/users/Vendors')));
+const Manufactures = Loadable(lazy(() => import('pages/users/Manufactures')));
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -45,6 +49,53 @@ const MainRoutes = {
                 {
                     path: 'blog/edit/:id',
                     element: <Blog />
+                }
+            ]
+        },
+        {
+            path: 'products',
+            children: [
+                {
+                    path: '/products',
+                    element: <Products />
+                },
+                {
+                    path: 'products/add',
+                    element: <Products />
+                },
+                {
+                    path: 'products/:id',
+                    element: <Products />
+                },
+                {
+                    path: 'products/edit/:id',
+                    element: <Products />
+                }
+            ]
+        },
+        {
+            path: 'users',
+            children: [
+                {
+                    path: '/users/buyers',
+                    element: <Users />
+                },
+                {
+                    path: '/users/vendors',
+                    element: <Vendors />
+                },
+                {
+                    path: '/users/manufacturers',
+                    element: <Manufactures />
+                }
+            ]
+        },
+        {
+            path: 'categories',
+            children: [
+                {
+                    path: '/categories',
+                    element: <Categories />
                 }
             ]
         }

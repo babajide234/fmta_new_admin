@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { refresh } from 'store/reducers/authSlice';
 import ls from 'localstorage-slim';
+import Breadcrumbs from 'components/@extended/Breadcrumbs';
+import navigation from 'menu-items';
 // ==============================|| MINIMAL LAYOUT ||============================== //
 
 const MinimalLayout = () => {
@@ -11,10 +13,10 @@ const MinimalLayout = () => {
     let navigate = useNavigate();
 
     useEffect(() => {
-        console.log('is Logged In: ', isLoggedin);
+        // console.log('is Logged In: ', isLoggedin);
         if (ls.get('token') !== null) {
             const data = ls.get('token').isloggedin;
-            console.log('user data: ', data);
+            // console.log('user data: ', data);
             data && dispatch(refresh());
         }
         if (isLoggedin) {
@@ -24,6 +26,7 @@ const MinimalLayout = () => {
 
     return (
         <>
+            <Breadcrumbs navigation={navigation} title={true} titleBottom={true} card={false} divider={false} />
             <Outlet />
         </>
     );

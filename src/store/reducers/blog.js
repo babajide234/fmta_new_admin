@@ -34,7 +34,7 @@ export const addBlogPost = createAsyncThunk('addblogPost', async (payload) => {
     }
 });
 
-export const editBlogPost = createAsyncThunk('editblogPost', async (payload) => {
+export const editBlogPost = createAsyncThunk('editblogPost', async (payload, id) => {
     try {
         const request = await axiosPrivate.put(`/blog/${id}`, payload);
         return request.data;

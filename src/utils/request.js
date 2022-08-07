@@ -3,11 +3,14 @@ import axios from 'axios';
 // import { useSelector } from 'react-redux';
 import ls from 'localstorage-slim';
 
+// const BASEURL = 'https://api.firstmedtrade.com/api/';
 const BASEURL = 'http://127.0.0.1:8000/api/';
 // const csrf = document.querySelector('meta[name="csrf-token"]').content;
 
 // console.log(csrf);
 // instance.defaults.headers.common['X-CSRF-TOKEN'] = window.csrf_token
+import Loader from '../components/Loader';
+
 export const instance = axios.create({
     baseURL: BASEURL,
     timeout: 10000,

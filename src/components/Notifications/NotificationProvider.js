@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { v4 } from 'uuid';
 import Alert from '@mui/material/Alert';
@@ -33,7 +34,7 @@ const NotificationProvider = (props) => {
             settimeout(!timeout);
             dispatch(openToast({ status: !timeout }));
         }, 3000);
-    }, []);
+    }, [dispatch, timeout]);
     console.log(notifications);
     return (
         <div>
@@ -55,7 +56,6 @@ const NotificationProvider = (props) => {
                     </Alert>
                 ))}
             </Box>
-            {props.children}
         </div>
     );
 };

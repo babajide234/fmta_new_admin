@@ -8,7 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import 'simplebar/src/simplebar.css';
 
 // third-party
-import { Provider as ReduxProvider, useSelector } from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
 // apex-chart
 import 'assets/third-party/apex-chart.css';
 
@@ -17,7 +17,7 @@ import App from './App';
 import { store } from 'store';
 import reportWebVitals from './reportWebVitals';
 import ls from 'localstorage-slim';
-import NotificationProvider from 'components/Notifications/NotificationProvider';
+// import NotificationProvider from 'components/Notifications/NotificationProvider';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
