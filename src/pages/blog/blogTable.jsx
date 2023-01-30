@@ -44,7 +44,10 @@ import { formatDistance } from 'date-fns';
 import Dot from 'components/@extended/Dot';
 
 //state imports
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteBlogPost } from '../../store/reducers/blog';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 function createData(title, author, date_created, published, tags, views, actions) {
     return { title, author, date_created, published, tags, views, actions };
@@ -246,6 +249,7 @@ const actions = [
     { icon: <DeleteIcon />, name: 'Delete' },
     { icon: <EditIcon />, name: 'Edit' }
 ];
+import { getBlogPosts } from 'store/reducers/blog';
 
 export default function BlogTable() {
     const [order] = useState('asc');
@@ -257,7 +261,7 @@ export default function BlogTable() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const { posts, singlePost, addStatus } = useSelector((state) => state.blogSlice);
-
+    const dispatch = useDispatch();
     // useEffect(() => {
     //     console.log('blog posts: ', posts);
     // }, []);
@@ -271,9 +275,25 @@ export default function BlogTable() {
     const handleClosem = () => {
         setAnchorEl(null);
     };
-    const handleDelete = (id) => {
+    const handleDelete = async (id) => {
         setAnchorEl(null);
         console.log('delete id: ', id);
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(deleteBlogPost(id)).then((res) => {
+                    Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+                    dispatch(getBlogPosts());
+                });
+            }
+        });
     };
     return (
         <Box>

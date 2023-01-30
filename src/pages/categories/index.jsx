@@ -44,7 +44,7 @@ const Categories = () => {
         {
             field: 'name',
             headerName: 'Name',
-            width: 250
+            width: 220
         },
         {
             field: 'subat',
@@ -61,7 +61,7 @@ const Categories = () => {
         {
             field: 'action',
             headerName: 'Action',
-            width: 150,
+            width: 100,
             renderCell: (params) => {
                 const id = params.id;
                 return (

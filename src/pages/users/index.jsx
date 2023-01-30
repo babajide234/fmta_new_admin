@@ -78,6 +78,7 @@ const Users = () => {
             }
         }
     ];
+
     const handleEdit = (id) => {
         console.log('Edit: ', id);
     };

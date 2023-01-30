@@ -12,6 +12,7 @@ const Categories = Loadable(lazy(() => import('pages/categories')));
 const Users = Loadable(lazy(() => import('pages/users')));
 const Vendors = Loadable(lazy(() => import('pages/users/Vendors')));
 const Manufactures = Loadable(lazy(() => import('pages/users/Manufactures')));
+const Hospitals = Loadable(lazy(() => import('pages/users/hospitals')));
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -87,6 +88,10 @@ const MainRoutes = {
                 {
                     path: '/users/manufacturers',
                     element: <Manufactures />
+                },
+                {
+                    path: '/users/hospitals',
+                    element: <Hospitals />
                 }
             ]
         },

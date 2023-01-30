@@ -38,6 +38,7 @@
         />
         <meta property="twitter:image" content="https://mantisdashboard.io/adv-banner-images/og-social.png" />
         <meta name="twitter:creator" content="@codedthemes" />
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <!--
       Notice the use of %PUBLIC_URL% in the tags above.
@@ -67,5 +68,9 @@
 
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
-    --></body>
+    -->
+    <script type="text/javascript">      
+        window.csrf_token = "{{ csrf_token() }}";
+    </script>
+</body>
 </html>

@@ -2,9 +2,9 @@
 import axios from 'axios';
 // import { useSelector } from 'react-redux';
 import ls from 'localstorage-slim';
-
-const BASEURL = 'https://api.firstmedtrade.com/api/';
-// const BASEURL = 'http://127.0.0.1:8000/api/';
+import qs from 'qs';
+// const BASEURL = 'https://api.firstmedtrade.com/api/';
+const BASEURL = 'http://127.0.0.1:8000/api/';
 // const csrf = document.querySelector('meta[name="csrf-token"]').content;
 
 // console.log(csrf);
@@ -28,20 +28,24 @@ export const axiosPrivate = axios.create({
     headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
-    }
-    // withCredentials:true
+    },
+    withCredentials: true
 });
-
 axiosPrivate.interceptors.request.use(
     function (config) {
         // Do something before request is sent
         const auth = ls.get('token');
 
         console.log(auth.isloggedin);
+        console.log(window);
         // Do something before request is sent
         //check if
         if (auth.isloggedin) {
             config.headers.Authorization = 'Bearer ' + auth.token;
+            config.headers.common = {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': window.csrf_token
+            };
         }
         return config;
     },

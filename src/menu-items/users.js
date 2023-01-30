@@ -37,6 +37,14 @@ const users = {
             url: '/users/manufacturers',
             icon: icons.ProfileOutlined,
             breadcrumbs: true
+        },
+        {
+            id: 'hospitals',
+            title: 'Hospitals',
+            type: 'item',
+            url: '/users/hospitals',
+            icon: icons.ProfileOutlined,
+            breadcrumbs: true
         }
     ]
 };

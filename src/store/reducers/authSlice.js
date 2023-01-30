@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { instance } from '../../utils/request';
 import ls from 'localstorage-slim';
-
+import axios from 'axios';
 const initialState = {
     token: '',
     isLoggedin: false,
@@ -11,6 +11,9 @@ const initialState = {
 
 export const login = createAsyncThunk('login', async (payload) => {
     try {
+        const csrf = await axios.get('http://localhost:8000/sanctum/csrf-cookie');
+        console.log(csrf.headers);
+        window.csrf_token = csrf.data;
         const request = await instance.post('/login', payload);
         return request.data;
     } catch (error) {

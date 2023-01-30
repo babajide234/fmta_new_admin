@@ -9,6 +9,7 @@ const initialState = {
     user: [],
     manufacturer: [],
     vendor: [],
+    hospitals: [],
     cat: [],
     subCat: [],
     isLoading: false
@@ -34,6 +35,14 @@ export const getVendors = createAsyncThunk('vendors', async () => {
 export const getManufacturers = createAsyncThunk('manufacturers', async () => {
     try {
         const request = await axiosPrivate.get('/manufacturers');
+        return request.data;
+    } catch (error) {
+        return console.log(error);
+    }
+});
+export const getHospital = createAsyncThunk('hospital', async () => {
+    try {
+        const request = await axiosPrivate.get('/hospitals');
         return request.data;
     } catch (error) {
         return console.log(error);
@@ -127,6 +136,17 @@ export const users = createSlice({
             state.isLoading = false;
         },
         [getSubCat.rejected]: (state, action) => {
+            state.isLoading = false;
+        },
+
+        [getHospital.pending]: (state, action) => {
+            state.isLoading = true;
+        },
+        [getHospital.fulfilled]: (state, action) => {
+            state.hospitals = action.payload;
+            state.isLoading = false;
+        },
+        [getHospital.rejected]: (state, action) => {
             state.isLoading = false;
         }
     }

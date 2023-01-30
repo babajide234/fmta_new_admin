@@ -61,11 +61,14 @@ const AddBlog = () => {
             fData.append('published', 0);
             fData.append('views', 0);
             const response = await dispatch(addBlogPost(fData));
-            if (response.status === 200) {
+            if (addStatus) {
+                setTitle('');
+                setSubtitle('');
+                setpostimage('');
+                setpostbody('');
                 setLoading(false);
                 setOpen(true);
-                setSuccess('Blog post added successfully');
-                toast.success(success);
+                toast.success('Blog post added successfully');
                 setTimeout(() => {
                     navigate('/dashboard/blog');
                 }, 1000);

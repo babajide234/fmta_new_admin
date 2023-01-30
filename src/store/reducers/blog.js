@@ -34,6 +34,14 @@ export const addBlogPost = createAsyncThunk('addblogPost', async (payload) => {
     }
 });
 
+export const deleteBlogPost = createAsyncThunk('deleteBLogPost', async (id) => {
+    try {
+        const request = await axiosPrivate.delete(`/blog/${id}`);
+        return request.data;
+    } catch (error) {
+        return console.log(error);
+    }
+});
 export const editBlogPost = createAsyncThunk('editblogPost', async (payload, id) => {
     try {
         const request = await axiosPrivate.put(`/blog/${id}`, payload);

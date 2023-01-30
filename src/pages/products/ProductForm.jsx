@@ -18,14 +18,27 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { Formik } from 'formik';
 import SunEditor from 'suneditor-react';
 import { axiosPrivate } from 'utils/request';
+import { updateProduct } from 'store/reducers/product';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { toast } from 'react-toastify';
+import { getManufacturers, getVendors } from 'store/reducers/users';
 
 const ProductForm = (props) => {
     const [editvalues, setEditValues] = useState([]);
     const [curr, setcurr] = useState('$');
     const [loading, setLoading] = useState(false);
     const [hscode, setHscode] = useState('');
+    const [usertype, setUsertype] = useState([]);
+    const [vendor, setVendor] = useState([]);
+    const [manufacturer, setManufacturer] = useState([]);
+    const [retailType, setRetailType] = useState('');
+    const dispatch = useDispatch();
+
     useEffect(() => {
         getGet();
+        getUserType();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -41,10 +54,34 @@ const ProductForm = (props) => {
                 }
             }
             setEditValues(arr);
-            console.log(`data from product: `, arr);
+            console.log(`data from product: `, props.data);
         }
     }, [props.data, props.edit]);
+    useEffect(() => {
+        console.log(`usertype: `, usertype);
+    }, [usertype]);
 
+    const getUserType = () => {
+        const arr = [];
+        dispatch(getVendors())
+            .then((res) => {
+                console.log(res.payload);
+                setVendor(res.payload);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        dispatch(getManufacturers())
+            .then((res) => {
+                console.log(res.payload);
+                setManufacturer(res.payload);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        // setUsertype();
+        console.log(`usertype: `, arr);
+    };
     const value = ['Units', 'Packs', 'Pieces', 'Cartons', 'Containers'];
     // const moqValue = edit ? value.map((value) => value == data.quantitySize && value) : 'Units';
 
@@ -78,10 +115,68 @@ const ProductForm = (props) => {
         city: props.edit ? props.data.details?.productShippedCity : '',
         address: props.edit ? props.data.details?.productShippedAddress : '',
         postalCode: props.edit ? props.data.details?.productShippedPostal : '',
-        hscCode: props.edit ? props.data.details?.productShippedHSC : ''
+        hscCode: props.edit ? props.data.details?.productShippedHSC : '',
+        retailType: '',
+        vendorId: props.edit ? props.data.vendorId : '',
+        manufacturerId: props.edit ? props.data.manufacturerId : ''
     };
     const handleSubmit = (values) => {
         console.log('values: ', values);
+        setLoading(true);
+        const payload = {
+            id: props.edit ? props.data.id : '',
+            productName: values.name,
+            minimumOrderQuantity: values.quantity,
+            quantitySize: values.quantityValue,
+            productPrice: values.price,
+            productPriceCurr: curr,
+            productDiscount: values.discount,
+            quantityInStock: values.inStock,
+            quantitySize: values.inStockValue,
+            productBrand: values.brand,
+            productCategory: values.category,
+            productSubCategory: values.subCategory,
+            details: {
+                productDescription: values.description,
+                intheBox: values.inTheBox,
+                productSize: values.sizeVariations,
+                productWeight: `${values.weight} ${values.weightUnit}`,
+                productColor: values.color,
+                productModelNumber: values.model,
+                productionCountry: values.countryOfOrigin,
+                productShipped: values.shippedFromAbroad,
+                productDimension: `${values.lenght}x${values.width}x${values.height}`,
+                productShippedAddress: values.address,
+                productShippedCity: values.city,
+                productShippedPostal: values.postalCode,
+                productShippedCountry: values.country,
+                productShippedHSC: values.hscCode,
+                productManufacture: values.manufacturedDate,
+                productExpiry: values.expiryDate
+            }
+        };
+        console.log('payload: ', payload);
+        if (props.edit) {
+            const id = props.data.id;
+            dispatch(updateProduct(payload))
+                .then((res) => {
+                    setLoading(false);
+                    // console.log('res: ', res);
+                    // if (res.status === '200') {
+                    toast.success('Product updated successfully');
+                    // props.history.push(`/product/${id}`);
+                    props.reload();
+                    props.onClose();
+                    // }
+                })
+                .catch((err) => {
+                    console.log('err: ', err);
+                    setLoading(false);
+                    toast.error('Error updating product');
+                });
+        } else {
+            console.log('values: ', values);
+        }
     };
     const handleCurr = (event) => {
         if (curr === '$') {
@@ -96,19 +191,11 @@ const ProductForm = (props) => {
         arr.push(
             res.data.map((item) => ({
                 label: item.Description,
-                value: item.TSN
+                tsn: item.TSN
             }))
         );
-        // res.data.map((item) => {
-        //     data.push({
-        //         id: item.id,
-        //         label: item.Description,
-        //         tsn: item.TSN
-        //     });
-        //     return arr;
-        // });
-        setHscode(arr);
-        console.log(arr);
+        setHscode(arr[0]);
+        console.log('mutated hsc', arr[0]);
         console.log(res.data);
     };
     const editor = useRef();
@@ -122,17 +209,7 @@ const ProductForm = (props) => {
     };
     return (
         <>
-            <Formik
-                initialValues={initialValues}
-                enableReinitialize={true}
-                onSubmit={(values, { setSubmitting }) => {
-                    setLoading(true);
-                    setSubmitting(true);
-                    console.log(values);
-                    setSubmitting(false);
-                    setLoading(false);
-                }}
-            >
+            <Formik initialValues={initialValues} enableReinitialize={true} onSubmit={handleSubmit}>
                 {({ values, handleChange, handleSubmit, isSubmitting }) => (
                     <form onSubmit={handleSubmit}>
                         <Grid container spacing={2}>
@@ -147,9 +224,56 @@ const ProductForm = (props) => {
                                             type="text"
                                             name="name"
                                             value={values.name}
+                                            onChange={handleChange}
                                             label="Product Name"
                                             variant="outlined"
                                         />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <FormControl fullWidth>
+                                            <InputLabel id="demo-simple-select-label">Select Retail Type</InputLabel>
+                                            <Select
+                                                labelId="demo-simple-select-label"
+                                                id="demo-simple-select"
+                                                value={retailType}
+                                                label="Select Retail Type"
+                                                onChange={(e) => setRetailType(e.target.value)}
+                                            >
+                                                <MenuItem value={`vendor`}>Vendor</MenuItem>
+                                                <MenuItem value={`manufacturer`}>Manufacturers</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        {retailType === 'vendor' ? (
+                                            <Autocomplete
+                                                id="combo-box-demo"
+                                                value={values.vendorId}
+                                                options={vendor}
+                                                getOptionLabel={(option) => option.name}
+                                                onChange={(e, value) => {
+                                                    values.vendorId = value.vendor.storeName;
+                                                    console.log('value: ', value);
+                                                }}
+                                                renderInput={(params) => (
+                                                    <TextField {...params} label="Vendor" variant="outlined" fullWidth />
+                                                )}
+                                            />
+                                        ) : (
+                                            <Autocomplete
+                                                id="combo-box-demo"
+                                                value={values.manufacturerId}
+                                                options={manufacturer}
+                                                getOptionLabel={(option) => option.name}
+                                                onChange={(e, value) => {
+                                                    values.manufacturerId = value.manufacturers.manufacturer;
+                                                    console.log('value: ', value);
+                                                }}
+                                                renderInput={(params) => (
+                                                    <TextField {...params} label="Manufacturer" variant="outlined" fullWidth />
+                                                )}
+                                            />
+                                        )}
                                     </Grid>
                                     <Grid container item spacing={2}>
                                         <Grid item xs={6}>
@@ -158,6 +282,7 @@ const ProductForm = (props) => {
                                                 type="number"
                                                 name="moq"
                                                 value={values.quantity}
+                                                onChange={handleChange}
                                                 label="Minimum Order Quantity"
                                                 variant="outlined"
                                             />
@@ -170,6 +295,7 @@ const ProductForm = (props) => {
                                                     id="demo-simple-select"
                                                     name="quantityValue"
                                                     value={values.quantityValue}
+                                                    onChange={handleChange}
                                                 >
                                                     {value.map((item) => (
                                                         <MenuItem key={item} value={item}>
@@ -187,6 +313,7 @@ const ProductForm = (props) => {
                                                 type="number"
                                                 name="price"
                                                 value={values.price}
+                                                onChange={handleChange}
                                                 label="Product Price"
                                                 variant="outlined"
                                                 InputProps={{
@@ -195,21 +322,6 @@ const ProductForm = (props) => {
                                             />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            {/* <FormControl fullWidth>
-                                                <InputLabel id="demo-simple-select-label">Currency</InputLabel>
-                                                <Select
-                                                    labelId="demo-simple-select-label"
-                                                    id="demo-simple-select"
-                                                    name="currency"
-                                                    value={values.currency}
-                                                    // label="Age"
-                                                    // onChange={handleChange}
-                                                >
-                                                    <MenuItem value={10}>Ten</MenuItem>
-                                                    <MenuItem value={20}>Twenty</MenuItem>
-                                                    <MenuItem value={30}>Thirty</MenuItem>
-                                                </Select>
-                                            </FormControl> */}
                                             <FormControlLabel
                                                 control={
                                                     <Switch
@@ -230,7 +342,14 @@ const ProductForm = (props) => {
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <TextField fullWidth name="discount" value={values.discount} label="Discount" variant="outlined" />
+                                        <TextField
+                                            fullWidth
+                                            name="discount"
+                                            value={values.discount}
+                                            onChange={handleChange}
+                                            label="Discount"
+                                            variant="outlined"
+                                        />
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -271,6 +390,7 @@ const ProductForm = (props) => {
                                                 type="number"
                                                 name="inStock"
                                                 value={values.inStock}
+                                                onChange={handleChange}
                                                 label="Quantity In Stock"
                                                 variant="outlined"
                                             />
@@ -283,8 +403,8 @@ const ProductForm = (props) => {
                                                     id="demo-simple-select"
                                                     name="inStockValue"
                                                     value={values.inStockValue}
+                                                    onChange={handleChange}
                                                     // label="Age"
-                                                    // onChange={handleChange}
                                                 >
                                                     {value.map((item) => (
                                                         <MenuItem key={item} value={item}>
@@ -302,6 +422,7 @@ const ProductForm = (props) => {
                                                 type="number"
                                                 name="lenght"
                                                 value={values.lenght}
+                                                onChange={handleChange}
                                                 label="Lenght"
                                                 variant="outlined"
                                             />
@@ -312,6 +433,7 @@ const ProductForm = (props) => {
                                                 type="number"
                                                 name="width"
                                                 value={values.width}
+                                                onChange={handleChange}
                                                 label="Width"
                                                 variant="outlined"
                                             />
@@ -322,6 +444,7 @@ const ProductForm = (props) => {
                                                 type="number"
                                                 name="height"
                                                 value={values.height}
+                                                onChange={handleChange}
                                                 label="Height"
                                                 variant="outlined"
                                             />
@@ -336,6 +459,7 @@ const ProductForm = (props) => {
                                                 label="Is this product for an adult or a child?"
                                                 name="isAdult"
                                                 value={values.isAdult}
+                                                onChange={handleChange}
                                                 // value={age}
                                                 // label="Age"
                                                 // onChange={handleChange}
@@ -351,6 +475,7 @@ const ProductForm = (props) => {
                                             fullWidth
                                             name="sizeVariations"
                                             value={values.sizeVariations}
+                                            onChange={handleChange}
                                             label="Product size (Enter sizes seperated by comma(,))"
                                             variant="outlined"
                                         />
@@ -362,6 +487,7 @@ const ProductForm = (props) => {
                                                 type="number"
                                                 name="weight"
                                                 value={values.weight}
+                                                onChange={handleChange}
                                                 label="Product Weight"
                                                 variant="outlined"
                                             />
@@ -371,6 +497,7 @@ const ProductForm = (props) => {
                                                 fullWidth
                                                 name="color"
                                                 value={values.color}
+                                                onChange={handleChange}
                                                 label="Product Color"
                                                 variant="outlined"
                                             />
@@ -380,6 +507,7 @@ const ProductForm = (props) => {
                                                 fullWidth
                                                 name="model"
                                                 value={values.model}
+                                                onChange={handleChange}
                                                 label="Model/Batch Number"
                                                 variant="outlined"
                                             />
@@ -391,6 +519,7 @@ const ProductForm = (props) => {
                                                 fullWidth
                                                 name="category"
                                                 value={values.category}
+                                                onChange={handleChange}
                                                 label="Product Category"
                                                 variant="outlined"
                                             />
@@ -400,6 +529,7 @@ const ProductForm = (props) => {
                                                 fullWidth
                                                 name="subCategory"
                                                 value={values.subCategory}
+                                                onChange={handleChange}
                                                 label="Product Sub-Category"
                                                 variant="outlined"
                                             />
@@ -411,6 +541,7 @@ const ProductForm = (props) => {
                                                 fullWidth
                                                 name="videoLink"
                                                 value={values.videoLink}
+                                                onChange={handleChange}
                                                 label="Video Link"
                                                 variant="outlined"
                                             />
@@ -423,6 +554,7 @@ const ProductForm = (props) => {
                                                 fullWidth
                                                 name="countryOfOrigin"
                                                 value={values.countryOfOrigin}
+                                                onChange={handleChange}
                                                 label="Made In"
                                                 variant="outlined"
                                             />
@@ -434,6 +566,7 @@ const ProductForm = (props) => {
                                                 fullWidth
                                                 name="manufacturedDate"
                                                 value={values.manufacturedDate}
+                                                onChange={handleChange}
                                                 label="Manufactured Date"
                                                 variant="outlined"
                                             />
@@ -443,6 +576,7 @@ const ProductForm = (props) => {
                                                 fullWidth
                                                 name="expiryDate"
                                                 value={values.expiryDate}
+                                                onChange={handleChange}
                                                 label="Expiry Date"
                                                 variant="outlined"
                                             />
@@ -482,6 +616,7 @@ const ProductForm = (props) => {
                                                 label="Shipped From Abroad?"
                                                 name="shippedFromAbroad"
                                                 value={values.shippedFromAbroad}
+                                                onChange={handleChange}
                                                 // value={age}
                                                 // label="Age"
                                                 // onChange={handleChange}
@@ -494,16 +629,31 @@ const ProductForm = (props) => {
                                     </Grid>
                                     <Grid container item spacing={2}>
                                         <Grid item xs={4}>
-                                            <TextField fullWidth name="country" value={values.country} label="Country" variant="outlined" />
+                                            <TextField
+                                                fullWidth
+                                                name="country"
+                                                value={values.country}
+                                                onChange={handleChange}
+                                                label="Country"
+                                                variant="outlined"
+                                            />
                                         </Grid>
                                         <Grid item xs={4}>
-                                            <TextField fullWidth name="city" value={values.city} label="City" variant="outlined" />
+                                            <TextField
+                                                fullWidth
+                                                name="city"
+                                                value={values.city}
+                                                onChange={handleChange}
+                                                label="City"
+                                                variant="outlined"
+                                            />
                                         </Grid>
                                         <Grid item xs={4}>
                                             <TextField
                                                 fullWidth
                                                 name="postalCode"
                                                 value={values.postalCode}
+                                                onChange={handleChange}
                                                 label="Postal Code"
                                                 variant="outlined"
                                             />
@@ -516,6 +666,7 @@ const ProductForm = (props) => {
                                             minRows={4}
                                             name="address"
                                             value={values.address}
+                                            onChange={handleChange}
                                             label="Address"
                                             variant="outlined"
                                         />
@@ -526,7 +677,14 @@ const ProductForm = (props) => {
                                             disablePortal
                                             name="hscCode"
                                             options={hscode}
-                                            // value={values.hscCode}
+                                            getOptionLabel={(option) => option.tsn + '-' + option.label || ''}
+                                            value={values.hscCode}
+                                            onChange={(event, newValue) => {
+                                                console.log(values.hscCode);
+                                                values.hscCode = newValue.tsn;
+                                                console.log(values.hscCode);
+                                            }}
+                                            inputValue={values.hscCode}
                                             sx={{ width: 300 }}
                                             renderInput={(params) => <TextField {...params} fullWidth label="Customs HSC Code" />}
                                         />

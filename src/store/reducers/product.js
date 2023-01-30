@@ -25,6 +25,16 @@ export const getProductById = createAsyncThunk('product', async (id) => {
     }
 });
 
+export const updateProduct = createAsyncThunk('update', async (payload) => {
+    try {
+        console.log(payload);
+        const request = await axiosPrivate.put(`/products/${payload.id}`, payload);
+        return request.data;
+    } catch (error) {
+        return console.log(error);
+    }
+});
+
 export const product = createSlice({
     name: 'Blog',
     initialState,
@@ -48,6 +58,16 @@ export const product = createSlice({
             state.product = action.payload;
         },
         [getProductById.rejected]: (state) => {
+            state.isLoading = false;
+        },
+        [updateProduct.pending]: (state) => {
+            state.isLoading = true;
+        },
+        [updateProduct.fulfilled]: (state, action) => {
+            console.log('from blogSlice: ', action.payload);
+            // state.product = action.payload;
+        },
+        [updateProduct.rejected]: (state) => {
             state.isLoading = false;
         }
     }

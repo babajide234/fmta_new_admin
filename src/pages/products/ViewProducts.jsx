@@ -21,7 +21,10 @@ const ViewProducts = () => {
     // const [columns, setColumns] = useState([]);
     const { products, product } = useSelector((state) => state.product);
     const dispatch = useDispatch();
-    // const handleOpen = () => setOpen(true);
+    const handleOpen = () => {
+        setEdit(false);
+        setOpen(true);
+    };
     const handleClose = () => setOpen(false);
 
     const handleDelete = (id) => {
@@ -44,9 +47,13 @@ const ViewProducts = () => {
     };
 
     useEffect(() => {
-        dispatch(getProducts());
-    }, [dispatch]);
+        getAllProducts();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
+    const getAllProducts = () => {
+        dispatch(getProducts());
+    };
     useEffect(() => {
         products && console.log(products);
         const rowsData = [];
@@ -163,10 +170,20 @@ const ViewProducts = () => {
     };
     return (
         <>
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+                <Typography variant="h4" component="h1">
+                    Products
+                </Typography>
+                <Box display="flex" alignItems="center">
+                    <Button variant="contained" color="primary" onClick={handleOpen}>
+                        Add Product
+                    </Button>
+                </Box>
+            </Box>
             <Table rows={rows} columns={columns} />
             <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
                 <Box sx={style}>
-                    <ProductForm edit data={product} />
+                    <ProductForm edit={edit} data={product} onClose={handleClose} reload={getAllProducts} />
                 </Box>
             </Modal>
         </>

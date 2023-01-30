@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Table from './../../components/Table/Table';
-import { Typography, IconButton, Chip, Box, Grid } from '@mui/material';
+import { IconButton, Grid } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { getManufacturers } from 'store/reducers/users';
 
