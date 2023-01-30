@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Table from './../../components/Table/Table';
 import { getHospital } from 'store/reducers/users';
@@ -36,7 +36,7 @@ const hospitals = () => {
             action: hospital.id
         };
         if (hospital.hospital) {
-            Object.keys(hospital.hospital).map((key, i) => {
+            Object.keys(hospital.hospital).map(() => {
                 row['hospital_name'] = hospital['hospital']['hospital_name'];
                 // console.log('venData: ', key + ': ' + venData['manufacturer']\[key]);
                 // row['country'] = hospital['hospital']['country'];

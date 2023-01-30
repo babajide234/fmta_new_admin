@@ -78,44 +78,44 @@ export const users = createSlice({
     initialState,
     reducers: {},
     extraReducers: {
-        [getUsers.pending]: (state, action) => {
+        [getUsers.pending]: (state) => {
             state.isLoading = true;
         },
         [getUsers.fulfilled]: (state, action) => {
             state.users = action.payload;
             state.isLoading = false;
         },
-        [getUsers.rejected]: (state, action) => {
+        [getUsers.rejected]: (state) => {
             state.isLoading = false;
         },
-        [getVendors.pending]: (state, action) => {
+        [getVendors.pending]: (state) => {
             state.isLoading = true;
         },
         [getVendors.fulfilled]: (state, action) => {
             state.vendors = action.payload;
             state.isLoading = false;
         },
-        [getVendors.rejected]: (state, action) => {
+        [getVendors.rejected]: (state) => {
             state.isLoading = false;
         },
-        [getManufacturers.pending]: (state, action) => {
+        [getManufacturers.pending]: (state) => {
             state.isLoading = true;
         },
         [getManufacturers.fulfilled]: (state, action) => {
             state.manufacturers = action.payload;
             state.isLoading = false;
         },
-        [getManufacturers.rejected]: (state, action) => {
+        [getManufacturers.rejected]: (state) => {
             state.isLoading = false;
         },
-        [getUserById.pending]: (state, action) => {
+        [getUserById.pending]: (state) => {
             state.isLoading = true;
         },
         [getUserById.fulfilled]: (state, action) => {
             state.user = action.payload;
             state.isLoading = false;
         },
-        [getUserById.rejected]: (state, action) => {
+        [getUserById.rejected]: (state) => {
             state.isLoading = false;
         },
         [getCat.pending]: (state) => {
@@ -125,28 +125,28 @@ export const users = createSlice({
             state.cat = action.payload;
             state.isLoading = false;
         },
-        [getCat.rejected]: (state, action) => {
+        [getCat.rejected]: (state) => {
             state.isLoading = false;
         },
-        [getSubCat.pending]: (state, action) => {
+        [getSubCat.pending]: (state) => {
             state.isLoading = true;
         },
         [getSubCat.fulfilled]: (state, action) => {
             state.subCat = action.payload;
             state.isLoading = false;
         },
-        [getSubCat.rejected]: (state, action) => {
+        [getSubCat.rejected]: (state) => {
             state.isLoading = false;
         },
 
-        [getHospital.pending]: (state, action) => {
+        [getHospital.pending]: (state) => {
             state.isLoading = true;
         },
         [getHospital.fulfilled]: (state, action) => {
             state.hospitals = action.payload;
             state.isLoading = false;
         },
-        [getHospital.rejected]: (state, action) => {
+        [getHospital.rejected]: (state) => {
             state.isLoading = false;
         }
     }

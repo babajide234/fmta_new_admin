@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Table from './../../components/Table/Table';
 import { IconButton, Grid } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { getManufacturers } from 'store/reducers/users';
 
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
@@ -36,7 +35,7 @@ const Manufactures = () => {
             action: manufacturer.id
         };
         if (manufacturer.manufacturers) {
-            Object.keys(manufacturer.manufacturers).map((key, i) => {
+            Object.keys(manufacturer.manufacturers).map(() => {
                 // console.log('venData: ', key + ': ' + venData['manufacturer'][key]);
                 row['manufacturer'] = manufacturer['manufacturers']['manufacturer'];
                 row['country'] = manufacturer['manufacturers']['country'];

@@ -19,17 +19,17 @@ import { Formik } from 'formik';
 import SunEditor from 'suneditor-react';
 import { axiosPrivate } from 'utils/request';
 import { updateProduct } from 'store/reducers/product';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { toast } from 'react-toastify';
 import { getManufacturers, getVendors } from 'store/reducers/users';
 
 const ProductForm = (props) => {
-    const [editvalues, setEditValues] = useState([]);
+    const [, setEditValues] = useState([]);
     const [curr, setcurr] = useState('$');
     const [loading, setLoading] = useState(false);
     const [hscode, setHscode] = useState('');
-    const [usertype, setUsertype] = useState([]);
+    const [usertype] = useState([]);
     const [vendor, setVendor] = useState([]);
     const [manufacturer, setManufacturer] = useState([]);
     const [retailType, setRetailType] = useState('');
@@ -157,9 +157,9 @@ const ProductForm = (props) => {
         };
         console.log('payload: ', payload);
         if (props.edit) {
-            const id = props.data.id;
+            // const id = props.data.id;
             dispatch(updateProduct(payload))
-                .then((res) => {
+                .then(() => {
                     setLoading(false);
                     // console.log('res: ', res);
                     // if (res.status === '200') {
@@ -178,13 +178,13 @@ const ProductForm = (props) => {
             console.log('values: ', values);
         }
     };
-    const handleCurr = (event) => {
-        if (curr === '$') {
-            setcurr('₦');
-        } else {
-            setcurr('$');
-        }
-    };
+    // const handleCurr = (event) => {
+    //     if (curr === '$') {
+    //         setcurr('₦');
+    //     } else {
+    //         setcurr('$');
+    //     }
+    // };
     const getGet = async () => {
         const res = await axiosPrivate.get('/hsc');
         const arr = [];
@@ -210,7 +210,7 @@ const ProductForm = (props) => {
     return (
         <>
             <Formik initialValues={initialValues} enableReinitialize={true} onSubmit={handleSubmit}>
-                {({ values, handleChange, handleSubmit, isSubmitting }) => (
+                {({ values, handleChange, handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
                         <Grid container spacing={2}>
                             <Grid container item spacing={4} md={12}>
