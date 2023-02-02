@@ -3,7 +3,8 @@ name: Deploy React App
 on:
   push:
     branches:
-      - master
+      - main
+      
 
 env:
   FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
