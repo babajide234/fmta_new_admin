@@ -34,7 +34,8 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
-        server:  ftps://ftp.firstmedtrade.com
+        server:  ftp.firstmedtrade.com
         username:  ${{ secrets.FTP_USERNAME }}
         password:   ${{ secrets.FTP_PASSWORD }}
+        protocol: ftps
         dry-run: true
