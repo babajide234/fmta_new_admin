@@ -12,7 +12,7 @@ const initialState = {
 export const login = createAsyncThunk('login', async (payload) => {
     try {
         // const csrf = await axios.get('http://localhost:8000/sanctum/csrf-cookie');
-        const csrf = await axios.get('http://api.firstmedtrade.com/sanctum/csrf-cookie');
+        const csrf = await axios.get('https://api.firstmedtrade.com/sanctum/csrf-cookie');
         console.log(csrf.headers);
         window.csrf_token = csrf.data;
         const request = await instance.post('/login', payload);
