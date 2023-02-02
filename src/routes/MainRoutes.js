@@ -1,18 +1,18 @@
 import { lazy } from 'react';
 
 // project import
-import Loadable from 'components/Loadable';
-import MainLayout from 'layout/MainLayout';
+import Loadable from '../components/Loadable';
+import MainLayout from '../layout/MainLayout';
 
 // render - dashboard
-const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
-const Blog = Loadable(lazy(() => import('pages/blog')));
-const Products = Loadable(lazy(() => import('pages/products')));
-const Categories = Loadable(lazy(() => import('pages/categories')));
-const Users = Loadable(lazy(() => import('pages/users')));
-const Vendors = Loadable(lazy(() => import('pages/users/Vendors')));
-const Manufactures = Loadable(lazy(() => import('pages/users/Manufactures')));
-const Hospitals = Loadable(lazy(() => import('pages/users/hospitals')));
+const DashboardDefault = Loadable(lazy(() => import('../pages/dashboard')));
+const Blog = Loadable(lazy(() => import('../pages/blog')));
+const Products = Loadable(lazy(() => import('../pages/products')));
+const Categories = Loadable(lazy(() => import('../pages/categories')));
+const Users = Loadable(lazy(() => import('../pages/users')));
+const Vendors = Loadable(lazy(() => import('../pages/users/Vendors')));
+const Manufactures = Loadable(lazy(() => import('../pages/users/Manufactures')));
+const Hospitals = Loadable(lazy(() => import('../pages/users/hospitals')));
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { axiosPrivate } from 'utils/request';
+import { axiosPrivate } from '../../utils/request';
 // import ls from 'localstorage-slim';
 
 const initialState = {
@@ -33,7 +33,6 @@ export const addBlogPost = createAsyncThunk('addblogPost', async (payload) => {
         return console.log(error);
     }
 });
-
 export const deleteBlogPost = createAsyncThunk('deleteBLogPost', async (id) => {
     try {
         const request = await axiosPrivate.delete(`/blog/${id}`);

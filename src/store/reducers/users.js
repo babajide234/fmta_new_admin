@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { axiosPrivate } from 'utils/request';
+import { axiosPrivate } from '../../utils/request';
 // import ls from 'localstorage-slim';
 
 const initialState = {

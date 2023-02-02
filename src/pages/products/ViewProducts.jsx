@@ -1,7 +1,6 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-import Table from 'components/Table/Table';
+import Table from '../../components/Table/Table';
 import { useState, useEffect } from 'react';
-import { getProducts, getProductById } from './../../store/reducers/product';
+import { getProducts, getProductById } from '../../store/reducers/product';
 import { useSelector, useDispatch } from 'react-redux';
 // import { GridRowsProp, GridColDef } from '@mui/x-data-grid';
 
@@ -48,7 +47,6 @@ const ViewProducts = () => {
 
     useEffect(() => {
         getAllProducts();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getAllProducts = () => {

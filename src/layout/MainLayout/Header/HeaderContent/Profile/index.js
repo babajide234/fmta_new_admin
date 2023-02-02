@@ -20,17 +20,17 @@ import {
 } from '@mui/material';
 
 // project import
-import MainCard from 'components/MainCard';
-import Transitions from 'components/@extended/Transitions';
+import MainCard from '../../../../../components/MainCard';
+import Transitions from '../../../../../components/@extended/Transitions';
 import ProfileTab from './ProfileTab';
 import SettingTab from './SettingTab';
 
 // assets
-import avatar1 from 'assets/images/users/avatar-1.png';
+import avatar1 from '../../../../../assets/images/users/avatar-1.png';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import ls from 'localstorage-slim';
-import { logout } from 'store/reducers/authSlice';
+import { logout } from '../../../../../store/reducers/authSlice';
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
     return (
@@ -66,9 +66,9 @@ const Profile = () => {
 
         console.log('user: ', user);
         console.log('user: ', userData);
-        if (userData) {
-            setUsername(userData?.user.firstname + ' ' + userData?.user.lastname);
-        }
+        // userData && setUsername(userData?.user.firstname + ' ' + userData?.user.lastname);
+        // if (userData) {
+        // }
     }, [user]);
 
     const handleLogout = async () => {

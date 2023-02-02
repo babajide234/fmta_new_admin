@@ -25,7 +25,7 @@ import { Formik } from 'formik';
 
 // project import
 import FirebaseSocial from './FirebaseSocial';
-import AnimateButton from 'components/@extended/AnimateButton';
+import AnimateButton from '../../../components/@extended/AnimateButton';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
@@ -33,7 +33,7 @@ import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 import { useSelector, useDispatch } from 'react-redux';
-import { login } from 'store/reducers/authSlice';
+import { login } from '../../../store/reducers/authSlice';
 
 // ============================|| ||============================ //
 import { toast } from 'react-toastify';

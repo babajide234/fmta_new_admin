@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { Outlet, Navigate, useNavigate, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,13 +9,13 @@ import { Box, Toolbar, useMediaQuery } from '@mui/material';
 // project import
 import Drawer from './Drawer';
 import Header from './Header';
-import navigation from 'menu-items';
-import Breadcrumbs from 'components/@extended/Breadcrumbs';
+import navigation from '../../menu-items';
+import Breadcrumbs from '../../components/@extended/Breadcrumbs';
 
 // types
-import { openDrawer } from 'store/reducers/menu';
+import { openDrawer } from '../../store/reducers/menu';
 // import { drawerOpen } from 'store/reducers/authSlice';
-import { refresh } from 'store/reducers/authSlice';
+import { refresh } from '../../store/reducers/authSlice';
 import ls from 'localstorage-slim';
 // ==============================|| MAIN LAYOUT ||============================== //
 const useAuth = () => {
@@ -48,13 +47,10 @@ const MainLayout = () => {
     useEffect(() => {
         setOpen(!matchDownLG);
         dispatch(openDrawer({ drawerOpen: !matchDownLG }));
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [matchDownLG]);
 
     useEffect(() => {
         if (open !== drawerOpen) setOpen(drawerOpen);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [drawerOpen]);
 
     const isAuth = useAuth();

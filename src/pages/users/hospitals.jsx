@@ -1,8 +1,7 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Table from './../../components/Table/Table';
-import { getHospital } from 'store/reducers/users';
+import Table from '../../components/Table/Table';
+import { getHospital } from '../../store/reducers/users';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { IconButton, Grid, Chip } from '@mui/material';

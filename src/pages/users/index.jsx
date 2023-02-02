@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import Table from './../../components/Table/Table';
+import Table from '../../components/Table/Table';
 import { IconButton, Grid } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
-import { getUsers } from 'store/reducers/users';
+import { getUsers } from '../../store/reducers/users';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';

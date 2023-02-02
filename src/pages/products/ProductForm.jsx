@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useState, useEffect, useRef } from 'react';
 import {
     Grid,
@@ -17,12 +16,12 @@ import LoadingButton from '@mui/lab/LoadingButton';
 // import SaveIcon from '@mui/icons-material/Save';
 import { Formik } from 'formik';
 import SunEditor from 'suneditor-react';
-import { axiosPrivate } from 'utils/request';
-import { updateProduct } from 'store/reducers/product';
+import { axiosPrivate } from '../../utils/request';
+import { updateProduct } from '../../store/reducers/product';
 import { useDispatch } from 'react-redux';
 
 import { toast } from 'react-toastify';
-import { getManufacturers, getVendors } from 'store/reducers/users';
+import { getManufacturers, getVendors } from '../../store/reducers/users';
 
 const ProductForm = (props) => {
     const [, setEditValues] = useState([]);
@@ -38,7 +37,6 @@ const ProductForm = (props) => {
     useEffect(() => {
         getGet();
         getUserType();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {

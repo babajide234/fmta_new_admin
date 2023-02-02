@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { refresh } from 'store/reducers/authSlice';
+import { refresh } from '../../store/reducers/authSlice';
 import ls from 'localstorage-slim';
-import Breadcrumbs from 'components/@extended/Breadcrumbs';
-import navigation from 'menu-items';
+import Breadcrumbs from '../../components/@extended/Breadcrumbs';
+import navigation from '../../menu-items';
 // ==============================|| MINIMAL LAYOUT ||============================== //
 
 const MinimalLayout = () => {

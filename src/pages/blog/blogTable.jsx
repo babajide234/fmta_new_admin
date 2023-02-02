@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
+
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
@@ -41,11 +40,12 @@ import NumberFormat from 'react-number-format';
 import { formatDistance } from 'date-fns';
 
 // project import
-import Dot from 'components/@extended/Dot';
+import Dot from '../../components/@extended/Dot';
 
 //state imports
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteBlogPost } from '../../store/reducers/blog';
+
+
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
@@ -249,7 +249,7 @@ const actions = [
     { icon: <DeleteIcon />, name: 'Delete' },
     { icon: <EditIcon />, name: 'Edit' }
 ];
-import { getBlogPosts } from 'store/reducers/blog';
+import { getBlogPosts } from '../../store/reducers/blog';
 
 export default function BlogTable() {
     const [order] = useState('asc');
@@ -288,10 +288,7 @@ export default function BlogTable() {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                dispatch(deleteBlogPost(id)).then((res) => {
-                    Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
-                    dispatch(getBlogPosts());
-                });
+                
             }
         });
     };
