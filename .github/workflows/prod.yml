@@ -24,11 +24,7 @@ jobs:
         key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-npm-
-      if: |
-        ! github.event.head_commit.message.includes('[skip cache]') &&
-        (github.event.head_commit.modified.includes('package.json') ||
-        ! github.event.head_commit.added.includes('package-lock.json'))
-
+      
     - name: Build React app
       run: |
         if [[ -n $(git diff HEAD HEAD~ -- package-lock.json) ]]; then
