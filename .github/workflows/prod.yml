@@ -1,51 +1,32 @@
-name: fmta_dev
+name: Deploy React App
+
 on:
   push:
-    branches: [ main ]
+    branches:
+      - master
+
+env:
+  FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
 
 jobs:
-  build:
-
+  deploy:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x, 15.x, 16.x]
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: npm ci, build and test
-        run:
-          npm install
-          npm run build --if-present
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Create deployment artifact
-        run: tar -czf app.tar.gz --exclude=*.git --exclude=node_modules --exclude=tests *
-      - name: Archive Production Artifact
-        uses: actions/upload-artifact@master
-        with:
-          name: build
-          path: build
-  # web-deploy:
-  #   needs: build
-  #   name: 🎉 Deploy
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Checkout Repo
-  #     uses: actions/checkout@v2
-  #   - name: Download Artifact
-  #     uses: actions/download-artifact@master
-  #     with:
-  #       name: build
-  #       path: build
-  #   - name: FTP Deploy
-  #     uses: SamKirkland/FTP-Deploy-Action@4.2.0
-  #     with:
-  #       server: ${{ secrets.FTP_SERVER }}
-  #       username: ${{ secrets.FTP_USERNAME }}
-  #       password: ${{ secrets.FTP_PASSWORD }}
-  #       protocol: ftps
-  #       server-dir: /public_html/admin-public/admin_new
+    - name: Build React app
+      run: |
+        npm install
+        npm run build
+
+    - name: Upload build files to shared hosting
+      uses: samhagon/ftp-action@v1
+      with:
+        host: ${{ secrets.FTP_HOST }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ env.FTP_PASSWORD }}
+        localPath: ./build/
+        remotePath:  /public_html/Testupload
+        mode: upload
