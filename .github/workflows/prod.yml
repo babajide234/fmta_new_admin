@@ -24,21 +24,19 @@ jobs:
         key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-npm-
+      if: |
+        ! github.event.head_commit.message.includes('[skip cache]') &&
+        (github.event.head_commit.modified.includes('package.json') ||
+        ! github.event.head_commit.added.includes('package-lock.json'))
 
     - name: Build React app
       run: |
-        npm ci
+        if [[ -n $(git diff HEAD HEAD~ -- package-lock.json) ]]; then
+          npm ci
+        fi
         npm run build
 
-    # - name: Upload build files to shared hosting
-    #   uses: samhagon/ftp-action@v2
-    #   with:
-    #     host: ${{ secrets.FTP_HOST }}
-    #     username: ${{ secrets.FTP_USERNAME }}
-    #     password: ${{ env.FTP_PASSWORD }}
-    #     localPath: ./build/
-    #     remotePath:  /public_html/Testupload
-    #     mode: upload
+
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
