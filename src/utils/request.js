@@ -3,8 +3,9 @@ import axios from 'axios';
 // import { useSelector } from 'react-redux';
 import ls from 'localstorage-slim';
 import qs from 'qs';
-// const BASEURL = 'https://api.firstmedtrade.com/api/';
-const BASEURL = 'http://127.0.0.1:8000/api/';
+const BASEURL = 'https://api.firstmedtrade.com/api/';
+// const BASEURL = 'http://127.0.0.1:8000/api/';
+// const BASEURL = process.env.REACT_APP_BASE_URL;
 // const csrf = document.querySelector('meta[name="csrf-token"]').content;
 
 // console.log(csrf);
