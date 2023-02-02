@@ -14,20 +14,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v3
 
     - name: Build React app
       run: |
         npm install
         npm run build
 
-    - name: Upload build files to shared hosting
-      uses: samhagon/ftp-action@v2
+    # - name: Upload build files to shared hosting
+    #   uses: samhagon/ftp-action@v2
+    #   with:
+    #     host: ${{ secrets.FTP_HOST }}
+    #     username: ${{ secrets.FTP_USERNAME }}
+    #     password: ${{ env.FTP_PASSWORD }}
+    #     localPath: ./build/
+    #     remotePath:  /public_html/Testupload
+    #     mode: upload
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
-        host: ${{ secrets.FTP_HOST }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ env.FTP_PASSWORD }}
-        localPath: ./build/
-        remotePath:  /public_html/Testupload
-        mode: upload
+        server:  ${{ secrets.FTP_HOST }}
+        username:  ${{ secrets.FTP_USERNAME }}
+        password:  ${{ env.FTP_PASSWORD }}
+        dry-run: true
