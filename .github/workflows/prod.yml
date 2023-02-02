@@ -41,5 +41,5 @@ jobs:
         password:   ${{ secrets.FTP_PASSWORD }}
         protocol: ftps
         local-dir: ./build/
-        server-dir: /public_html/admin-public/admin_new
+        server-dir: /public_html/admin-public/admin_new/
         # dry-run: true
