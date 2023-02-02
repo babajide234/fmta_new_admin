@@ -27,11 +27,8 @@ jobs:
       
     - name: Build React app
       run: |
-        if [[ -n $(git diff HEAD HEAD~ -- package-lock.json) ]]; then
-          npm ci
-        fi
+        npm ci
         npm run build
-
 
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
